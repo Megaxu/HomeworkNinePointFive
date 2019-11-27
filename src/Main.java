@@ -5,14 +5,16 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.DecimalFormat;
 import java.util.List;
+import java.util.Scanner;
 import java.util.stream.Collectors;
 
 public class Main {
 
+  private static Scanner input = new Scanner(System.in);
   public static void main(String[] args) {
 
-    String path = "H:\\Projects".replaceAll("\\\\", "/");
-    // Читал, что слэши от виндоувс убирают кроссплатформенность, поэтому заменил их
+    System.out.println("Введите путь к исходной папке: ");
+    String path = input.nextLine();
     long size = 0;
 
     try {
