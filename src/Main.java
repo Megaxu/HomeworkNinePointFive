@@ -1,5 +1,11 @@
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.text.DecimalFormat;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class Main {
 
@@ -12,7 +18,8 @@ public class Main {
     try {
       File folder = new File(path);
       if (folder.isDirectory()) {
-        size += getSize(folder);
+        //size += getSizeOld(folder);
+        size += getSize(path);
         convertToReadability(size);
       } else {
         System.out.println("Указанный путь: " + path + " не ведет к папке.");
@@ -22,19 +29,42 @@ public class Main {
     }
   }
 
-  private static long getSize(File folder) {
+  private static long getSize(String path) {
 
     long size = 0;
-    File[] files = folder.listFiles();
 
-    for (File file : files) {
-      if (file.isDirectory()) {
-        size += getSize(file);
-      } else {
-        size += file.length();
+    try {
+      List<Long> collect = Files.walk(Paths.get(path))
+          .filter(Files::isRegularFile)
+          .map(Path::toFile)
+          .map(File::length)
+          .collect(Collectors.toList());
+
+      for (Long element : collect) {
+        size += element;
       }
-    }
 
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+    return size;
+  }
+
+  private static long getSizeOld(File folder) {
+
+    long size = 0;
+    try {
+      File[] files = folder.listFiles();
+      for (File file : files) {
+        if (file.isDirectory()) {
+          size += getSizeOld(file);
+        } else {
+          size += file.length();
+        }
+      }
+    } catch (Exception ex) {
+      ex.printStackTrace();
+    }
     return size;
   }
 
