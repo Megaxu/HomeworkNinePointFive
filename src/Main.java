@@ -11,23 +11,27 @@ import java.util.stream.Collectors;
 public class Main {
 
   private static Scanner input = new Scanner(System.in);
+
   public static void main(String[] args) {
 
-    System.out.println("Введите путь к исходной папке: ");
-    String path = input.nextLine();
-    long size = 0;
+    for (; ; ) {
 
-    try {
-      File folder = new File(path);
-      if (folder.isDirectory()) {
-        //size += getSizeOld(folder);
-        size += getSize(path);
-        convertToReadability(size);
-      } else {
-        System.out.println("Указанный путь: " + path + " не ведет к папке.");
+      System.out.println("Введите путь к исходной папке: ");
+      String path = input.nextLine();
+      long size = 0;
+
+      try {
+        File folder = new File(path);
+        if (folder.isDirectory()) {
+          //size += getSizeOld(folder);
+          size += getSize(path);
+          convertToReadability(size);
+        } else {
+          System.out.println("Указанный путь: " + path + " не ведет к папке.");
+        }
+      } catch (Exception ex) {
+        ex.printStackTrace();
       }
-    } catch (Exception ex) {
-      ex.printStackTrace();
     }
   }
 
